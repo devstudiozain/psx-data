@@ -1,0 +1,24 @@
+name: Update PSX Data
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # every 5 minutes
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch PSX Data
+        run: |
+          curl -s https://dps.psx.com.pk/market-watch > data.json
+
+      - name: Commit
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@example.com"
+          git add data.json
+          git commit -m "update data" || echo "no change"
+          git push
