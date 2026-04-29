@@ -3,7 +3,10 @@ name: Update PSX Data
 on:
   schedule:
     - cron: "*/5 * * * *"
-  workflow_dispatch:   # 👈 ADD THIS LINE
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 👈 IMPORTANT
 
 jobs:
   update:
@@ -14,7 +17,7 @@ jobs:
 
       - name: Fetch PSX Data
         run: |
-          curl -s https://dps.psx.com.pk/market-watch > data.json
+          curl -A "Mozilla/5.0" -s https://dps.psx.com.pk/market-watch > data.json
 
       - name: Commit
         run: |
